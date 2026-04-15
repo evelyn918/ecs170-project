@@ -1,0 +1,10 @@
+In case you get stuck:
+
+1. Make sure to add the .csv files that were in the project description
+    * the code expects a file called "test.csv" and "train.csv" to be loacated in data\stage_2_data
+
+2. Make sure your virtual envirionment is set up with the right packages 
+    * the main ones are scikit-learn, numpy, and torch
+
+3. The file you want to run is in ..\script\stage_2_script\script_mlp.py 
+    * If you're like me and like to run code through the command line it won't always find the files correctly. It's better to just to navigate to it and use the "run current file" option at the top of the IDE
