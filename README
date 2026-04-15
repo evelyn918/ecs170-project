@@ -6,5 +6,11 @@ In case you get stuck:
 2. Make sure your virtual envirionment is set up with the right packages 
     * the main ones are scikit-learn, numpy, and torch
 
-3. The file you want to run is in ..\script\stage_2_script\script_mlp.py 
+3. The file you want to run is in ..\script\stage_2_script\script_mlp.py
     * If you're like me and like to run code through the command line it won't always find the files correctly. It's better to just to navigate to it and use the "run current file" option at the top of the IDE
+
+--
+
+* install matplotlib for the plot to show
+* had path issues due to local code location, used PYTHONPATH= .../ecs170-group-project/ECS170_Spring_2026_Source_Code_Template python script/stage_2_script/script_mlp.py
+  to run, so changed data_obj.dataset_source_folder_path in script_mlp.py; left original as a comment above

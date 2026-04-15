@@ -10,6 +10,7 @@ from local_code.stage_2_code.Evaluate_Metrics import Evaluate_Metrics
 import torch
 from torch import nn
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Method_MLP(method, nn.Module):
@@ -57,6 +58,8 @@ class Method_MLP(method, nn.Module):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         # check here for the nn.CrossEntropyLoss doc: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
         loss_function = nn.CrossEntropyLoss()
+        # save loss values
+        loss_val = []
         # for training accuracy investigation purpose
         accuracy_evaluator = Evaluate_Metrics('training evaluator', '')
 
@@ -79,6 +82,8 @@ class Method_MLP(method, nn.Module):
             # check here for the opti.step doc: https://pytorch.org/docs/stable/optim.html
             # update the variables according to the optimizer and the gradients calculated by the above loss.backward function
             optimizer.step()
+            # add to loss_val
+            loss_val.append(train_loss.item())
 
             if epoch%10 == 0:
                 accuracy_evaluator.data = {'true_y': y_true, 'pred_y': y_pred.max(1)[1]}
@@ -90,6 +95,13 @@ class Method_MLP(method, nn.Module):
                         'Recall:', accuracy_evaluator.recall, '\n',
                         'F1:', accuracy_evaluator.f1, '\n',
                         'Loss:', train_loss.item())
+        # convergence curve plot
+        plt.figure()
+        plt.plot(range(self.max_epoch),loss_val)
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss Values')
+        plt.title('Learning Convergence Plot')
+        plt.show()
     
     def test(self, X):
         # do the testing, and result the result

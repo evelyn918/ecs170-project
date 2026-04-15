@@ -15,7 +15,9 @@ if 1:
 
     # ---- objection initialization setction ---------------
     data_obj = Dataset_Loader('Part 2 Dataset', '')
-    data_obj.dataset_source_folder_path = '../../data/stage_2_data/'
+    # data_obj.dataset_source_folder_path = '../../data/stage_2_data/'
+    # if using path root:
+     = 'data/stage_2_data/'
     data_obj.dataset_testing_file = "test.csv"
     data_obj.dataset_training_file = "train.csv"
 
