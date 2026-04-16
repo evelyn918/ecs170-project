@@ -16,9 +16,10 @@ import matplotlib.pyplot as plt
 class Method_MLP(method, nn.Module):
     data = None
     # it defines the max rounds to train the model
-    max_epoch = 21
+    max_epoch = 51
     # it defines the learning rate for gradient descent based optimizer for model learning
     learning_rate = 1e-3
+    #learning_rate = 1e-1
 
     # it defines the the MLP model architecture, e.g.,
     # how many layers, size of variables in each layer, activation function, etc.
@@ -28,12 +29,18 @@ class Method_MLP(method, nn.Module):
         nn.Module.__init__(self)
         # check here for nn.Linear doc: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
         # Feature that adds the number of layers
-        self.fc_layer_1 = nn.Linear(784, 20)
+        self.fc_layer_1 = nn.Linear(784, 392)
         # check here for nn.ReLU doc: https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
         self.activation_func_1 = nn.ReLU()
-        self.fc_layer_2 = nn.Linear(20, 10)
+        self.fc_layer_2 = nn.Linear(392, 196)
         # check here for nn.Softmax doc: https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html
-        self.activation_func_2 = nn.Softmax(dim=1)
+        self.activation_func_2 = nn.ReLU()
+
+        self.fc_layer_3 = nn.Linear(196, 93)
+        self.activation_func_3  = nn.ReLU()
+
+        self.fc_layer_4 = nn.Linear(93, 10)
+        self.activation_func_4 = nn.Softmax(dim=1)
 
 
     # it defines the forward propagation function for input x
@@ -43,11 +50,14 @@ class Method_MLP(method, nn.Module):
         '''Forward propagation'''
         # hidden layer embeddings
         h = self.activation_func_1(self.fc_layer_1(x))
+        h = self.activation_func_2(self.fc_layer_2(h))
+        h = self.activation_func_3(self.fc_layer_3(h))
+
         # outout layer result
-        # self.fc_layer_2(h) will be a nx2 tensor
         # n (denotes the input instance number): 0th dimension; 2 (denotes the class number): 1st dimension
         # we do softmax along dim=1 to get the normalized classification probability distributions for each instance
-        y_pred = self.activation_func_2(self.fc_layer_2(h))
+
+        y_pred = self.activation_func_4(self.fc_layer_4(h))
         return y_pred
 
     # backward error propagation will be implemented by pytorch automatically
@@ -56,6 +66,10 @@ class Method_MLP(method, nn.Module):
     def train(self, X, y):
         # check here for the torch.optim doc: https://pytorch.org/docs/stable/optim.html
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+
+        # SGD returns a very low accuracy
+        #optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate)
+
         # check here for the nn.CrossEntropyLoss doc: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
         loss_function = nn.CrossEntropyLoss()
         # save loss values
