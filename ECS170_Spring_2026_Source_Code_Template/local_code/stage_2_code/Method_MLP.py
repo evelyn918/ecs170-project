@@ -32,17 +32,17 @@ class Method_MLP(method, nn.Module):
         self.max_epoch = epoch
         # check here for nn.Linear doc: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
         # Feature that adds the number of layers
-        self.fc_layer_1 = nn.Linear(784, 392)
+        self.fc_layer_1 = nn.Linear(784, 30)
         # check here for nn.ReLU doc: https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
         self.activation_func_1 = nn.ReLU()
-        self.fc_layer_2 = nn.Linear(392, 196)
+        self.fc_layer_2 = nn.Linear(30, 20)
         # check here for nn.Softmax doc: https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html
         self.activation_func_2 = nn.ReLU()
 
-        self.fc_layer_3 = nn.Linear(196, 93)
+        self.fc_layer_3 = nn.Linear(20, 15)
         self.activation_func_3  = nn.ReLU()
 
-        self.fc_layer_4 = nn.Linear(93, 10)
+        self.fc_layer_4 = nn.Linear(15, 10)
         self.activation_func_4 = nn.Softmax(dim=1)
 
 
