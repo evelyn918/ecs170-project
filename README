@@ -7,7 +7,12 @@ In case you get stuck:
     * the main ones are scikit-learn, numpy, and torch
 
 3. The file you want to run is in ..\script\stage_2_script\script_mlp.py
-    * If you're like me and like to run code through the command line it won't always find the files correctly. It's better to just to navigate to it and use the "run current file" option at the top of the IDE
+    * I set it up to where both the system path and the working directory should both start in the /ECS170_Spring_2026_Source_Code_Template folder. You should be able to run the file either through the IDE or manually through the terminal
+
+    ** If running using terminal **
+    You will have to manually close out of the plots from matplotlib for the code to continue running
+    
+
 
 --
 

@@ -2,6 +2,7 @@
 Concrete SettingModule class for a specific experimental SettingModule
 '''
 from local_code.base_class.evaluate import evaluate
+from local_code.base_class.method import method
 # Copyright (c) 2017-Current Jiawei Zhang <jiawei@ifmlab.org>
 # License: TBD
 
@@ -9,7 +10,6 @@ from local_code.base_class.setting import setting
 import numpy as np
 
 class Setting_Training_Testing_Data(setting):
-
     def load_run_save_evaluate(self):
         
         # load dataset
@@ -36,6 +36,11 @@ class Setting_Training_Testing_Data(setting):
 
         self.evaluate.data = learned_result
         self.evaluate.evaluate()
+
+        self.method.accuracy_evaluator.data = learned_result
+        self.method.accuracy_evaluator.evaluate()
+
+        self.method.save_readable_data_overall(self.method.method_description)
         score_list.append(self.evaluate.accuracy)
 
         return np.mean(score_list), np.std(score_list)

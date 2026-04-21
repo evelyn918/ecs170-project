@@ -1,7 +1,6 @@
 '''
 Concrete MethodModule class for a specific learning MethodModule
 '''
-from torch.ao.quantization.fx import prepare
 
 # Copyright (c) 2017-Current Jiawei Zhang <jiawei@ifmlab.org>
 # License: TBD
@@ -14,11 +13,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Method_MLP(method, nn.Module):
+class Method_MLP_8_Layers(method, nn.Module):
     data = None
     accuracy_evaluator = None
     # it defines the max rounds to train the model
-    max_epoch = 2
+    max_epoch = None
     # it defines the learning rate for gradient descent based optimizer for model learning
     learning_rate = 1e-3
     #learning_rate = 1e-1
@@ -26,24 +25,37 @@ class Method_MLP(method, nn.Module):
     # it defines the the MLP model architecture, e.g.,
     # how many layers, size of variables in each layer, activation function, etc.
     # the size of the input/output portal of the model architecture should be consistent with our data input and desired output
-    def __init__(self, mName, mDescription,epoch):
+    def __init__(self, mName, mDescription, epoch):
         method.__init__(self, mName, mDescription)
         nn.Module.__init__(self)
         self.max_epoch = epoch
         # check here for nn.Linear doc: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
         # Feature that adds the number of layers
-        self.fc_layer_1 = nn.Linear(784, 392)
+        self.fc_layer_1 = nn.Linear(784, 654)
         # check here for nn.ReLU doc: https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
         self.activation_func_1 = nn.ReLU()
-        self.fc_layer_2 = nn.Linear(392, 196)
+
+        self.fc_layer_2 = nn.Linear(654, 524)
         # check here for nn.Softmax doc: https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html
         self.activation_func_2 = nn.ReLU()
 
-        self.fc_layer_3 = nn.Linear(196, 93)
-        self.activation_func_3  = nn.ReLU()
+        self.fc_layer_3 = nn.Linear(524, 394)
+        self.activation_func_3 = nn.ReLU()
 
-        self.fc_layer_4 = nn.Linear(93, 10)
-        self.activation_func_4 = nn.Softmax(dim=1)
+        self.fc_layer_4 = nn.Linear(394, 264)
+        self.activation_func_4 = nn.ReLU()
+
+        self.fc_layer_5 = nn.Linear(264, 134)
+        self.activation_func_5 = nn.ReLU()
+
+        self.fc_layer_6 = nn.Linear(134, 68)
+        self.activation_func_6 = nn.ReLU()
+
+        self.fc_layer_7 = nn.Linear(68, 34)
+        self.activation_func_7 = nn.ReLU()
+
+        self.fc_layer_8 = nn.Linear(34,10)
+        self.activation_func_8 = nn.Softmax(dim=1)
 
 
     # it defines the forward propagation function for input x
@@ -55,12 +67,16 @@ class Method_MLP(method, nn.Module):
         h = self.activation_func_1(self.fc_layer_1(x))
         h = self.activation_func_2(self.fc_layer_2(h))
         h = self.activation_func_3(self.fc_layer_3(h))
+        h = self.activation_func_4(self.fc_layer_4(h))
+        h = self.activation_func_5(self.fc_layer_5(h))
+        h = self.activation_func_6(self.fc_layer_6(h))
+        h = self.activation_func_7(self.fc_layer_7(h))
 
         # outout layer result
         # n (denotes the input instance number): 0th dimension; 2 (denotes the class number): 1st dimension
         # we do softmax along dim=1 to get the normalized classification probability distributions for each instance
 
-        y_pred = self.activation_func_4(self.fc_layer_4(h))
+        y_pred = self.activation_func_8(self.fc_layer_8(h))
         return y_pred
 
     # backward error propagation will be implemented by pytorch automatically
@@ -113,8 +129,7 @@ class Method_MLP(method, nn.Module):
                         'Recall:', self.accuracy_evaluator.recall, '\n',
                         'F1:', self.accuracy_evaluator.f1, '\n',
                         'Loss:', train_loss.item())
-            self.save_readable_data(self.accuracy_evaluator, self.method_description, epoch, train_loss.item())
-
+            self.save_readable_data(self.accuracy_evaluator,self.method_description, epoch, train_loss.item())
         # convergence curve plot
         plt.figure()
         plt.plot(range(self.max_epoch),loss_val)
