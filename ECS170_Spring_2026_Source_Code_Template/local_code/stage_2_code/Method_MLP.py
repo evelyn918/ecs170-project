@@ -76,6 +76,7 @@ class Method_MLP(method, nn.Module):
 
         # check here for the nn.CrossEntropyLoss doc: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
         loss_function = nn.CrossEntropyLoss()
+
         # save loss values
         loss_val = []
         # for training accuracy investigation purpose
@@ -113,7 +114,11 @@ class Method_MLP(method, nn.Module):
                         'Recall:', self.accuracy_evaluator.recall, '\n',
                         'F1:', self.accuracy_evaluator.f1, '\n',
                         'Loss:', train_loss.item())
-            self.save_readable_data(self.accuracy_evaluator, self.method_description, epoch, train_loss.item())
+                self.save_readable_data(self.accuracy_evaluator, self.method_description, epoch, train_loss.item())
+            else:
+                self.accuracy_evaluator.data = {'true_y': y_true, 'pred_y': y_pred.max(1)[1]}
+                self.accuracy_evaluator.evaluate()
+                self.save_readable_data(self.accuracy_evaluator, self.method_description, epoch, train_loss.item())
 
         # convergence curve plot
         plt.figure()
