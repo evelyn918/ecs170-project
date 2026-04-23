@@ -27,13 +27,13 @@ def set_up_model(data_object, method, result_object, evaluate_object):
     setting.prepare(data_object, method, result_object, evaluate_object)
     setting.print_setup_summary()
     mean_score, std_score = setting.load_run_save_evaluate()
-    Precision = setting.evaluate.precision
-    Recall = setting.evaluate.recall
+    precision = setting.evaluate.precision
+    recall = setting.evaluate.recall
     f1 = setting.evaluate.f1
     print('************ Overall Performance ************')
     print('MLP Accuracy: ' + str(mean_score) + ' +/- ' + str(std_score))
-    print('Precision: ' + str(Precision))
-    print('Recall: ' + str(Recall))
+    print('Precision: ' + str(precision))
+    print('Recall: ' + str(recall))
     print('f1: ' + str(f1))
     print('************ Finish ************')
 
@@ -43,7 +43,7 @@ if 1:
     torch.manual_seed(2)
     #------------------------------------------------------
 
-    # ---- objection initialization setction ---------------
+    # ---- objection initialization section ---------------
 
     mode = input("Enter a mode -- (1) for 8 Layer mode | (2) for 4 Layer mode | (3) for 2 Layer mode] | (4) for all: ")
     while not mode.isdigit() or int(mode) > 4:
@@ -57,8 +57,8 @@ if 1:
     data_obj = Dataset_Loader('Part 2 Dataset', '')
     data_obj.dataset_source_folder_path = 'data/stage_2_data/'
     # if using path root: = 'data/stage_2_data/'
-    data_obj.dataset_testing_file = "test.csv"
-    data_obj.dataset_training_file = "train.csv"
+    data_obj.dataset_testing_file = "../../data/stage_2_data/test.csv"
+    data_obj.dataset_training_file = "../../data/stage_2_data/train.csv"
 
     method_obj = Method_MLP('multi-layer perceptron', '4_Layers', epoch)
     method_obj_2 = Method_MLP_2_Layers('multi-layer perceptron', '2_Layers', epoch)
