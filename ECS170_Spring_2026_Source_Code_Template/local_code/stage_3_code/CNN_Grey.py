@@ -7,7 +7,7 @@ import torch.optim as optim
 import torch.nn.functional as f
 from torch.utils.data import DataLoader, TensorDataset
 
-class CNN_RGB(nn.Module):
+class CNN_Grey(nn.Module):
     data = None
     transform_function = None
     test_transform = None
@@ -18,15 +18,15 @@ class CNN_RGB(nn.Module):
         self.transform_function = transforms.Compose([
             transforms.ToTensor(),
             transforms.RandomHorizontalFlip(),
-            transforms.RandomCrop(32, 4),#maybe use less padding
-            transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))
+            transforms.RandomCrop(28, 4),
+            transforms.Normalize((0.5,), (0.5,))
         ])
         self.test_transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            transforms.Normalize((0.5,), (0.5,))
         ])
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 16, 5, padding=2)
+        self.conv1 = nn.Conv2d(1, 16, 5, padding=2)
         # Batch normalization decreases variation to help with learning
         self.bn1 = nn.BatchNorm2d(16)
 
@@ -38,7 +38,7 @@ class CNN_RGB(nn.Module):
 
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.fc1 = nn.Linear(64 * 11 * 11, 450)
+        self.fc1 = nn.Linear(64 * 3 * 3, 450)
         self.fc2 = nn.Linear(450,250)
         self.fc3 = nn.Linear(250,10)
 
@@ -57,7 +57,7 @@ class CNN_RGB(nn.Module):
     def training_process(self):
         # .train() ensures our model is in training mode
         self.train()
-        max_epoch = 10
+        max_epoch = 3
         learning_rate = 5e-4
         #learning_rate = 0.001
         print("*******Starting Training*******\n")
@@ -134,11 +134,11 @@ class CNN_RGB(nn.Module):
         # Training data needs to use the transform function that adds variation to the data
         if t_type == 'test':
             for matrix in self.data[t_type]:
-                tensor_array.append(self.test_transform(matrix['image']))
+                tensor_array.append(self.test_transform(matrix['image']).float())
                 label_array.append(torch.tensor(matrix['label']))
         else:
             for matrix in self.data[t_type]:
-                tensor_array.append(self.transform_function(matrix['image']))
+                tensor_array.append(self.transform_function(matrix['image']).float())
                 label_array.append(torch.tensor(matrix['label']))
 
         return tensor_array,label_array

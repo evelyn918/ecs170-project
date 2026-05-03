@@ -4,6 +4,7 @@ import numpy as np
 import torch
 
 from local_code.stage_3_code.CNN_RGB import CNN_RGB
+from local_code.stage_3_code.CNN_Grey import CNN_Grey
 from local_code.stage_3_code.Simple_Setting import Simple_Setting
 
 # get the directory of the current script
@@ -22,7 +23,16 @@ if 1:
     np.random.seed(2)
     torch.manual_seed(2)
     #------------------------------------------------------
+    m_number = input("Enter the model you would like to use | (1) for RGB (2) for grey scale: ")
     colored_data_path = "data/stage_3_data/CIFAR"
-    model = CNN_RGB()
-    setting = Simple_Setting(colored_data_path, model)
-    setting.train()
+    grey_data_path = "data/stage_3_data/MNIST"
+
+    match int(m_number):
+        case 1:
+            model = CNN_RGB()
+            setting = Simple_Setting(colored_data_path, model)
+            setting.train()
+        case 2:
+            model2 = CNN_Grey()
+            setting2 = Simple_Setting(grey_data_path, model2)
+            setting2.train()
