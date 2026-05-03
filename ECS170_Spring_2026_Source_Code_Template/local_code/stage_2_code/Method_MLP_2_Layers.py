@@ -62,7 +62,7 @@ class Method_MLP_2_Layers(method, nn.Module):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
 
         # SGD returns a very low accuracy
-        #optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate)
+        # optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate)
 
         # check here for the nn.CrossEntropyLoss doc: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
         loss_function = nn.CrossEntropyLoss()
