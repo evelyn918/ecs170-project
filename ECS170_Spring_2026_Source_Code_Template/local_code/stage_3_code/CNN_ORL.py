@@ -7,7 +7,7 @@ import torch.optim as optim
 import torch.nn.functional as f
 from torch.utils.data import DataLoader, TensorDataset
 
-class CNN_RGB(nn.Module):
+class CNN_ORL(nn.Module):
     data = None
     transform_function = None
     test_transform = None
@@ -15,15 +15,19 @@ class CNN_RGB(nn.Module):
     def __init__(self):
         #self.transform_function = transforms.ToTensor()
         # This function gives the images a bit more variation when creating the image matrix
+
         self.transform_function = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Resize((28, 28)),
             transforms.ToTensor(),
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomCrop(32, 4),#maybe use less padding
-            transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))
+            transforms.Normalize((0.5,), (0.5,))
         ])
+
         self.test_transform = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Resize((28, 28)),
             transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            transforms.Normalize((0.5,), (0.5,))
         ])
         super().__init__()
         self.conv1 = nn.Conv2d(3, 16, 5, padding=2)
@@ -38,9 +42,9 @@ class CNN_RGB(nn.Module):
 
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.fc1 = nn.Linear(64 * 4 * 4, 450)
+        self.fc1 = nn.Linear(64 * 3 * 3, 450)
         self.fc2 = nn.Linear(450,250)
-        self.fc3 = nn.Linear(250,10)
+        self.fc3 = nn.Linear(250,40)
 
 
     def forward(self,x):
@@ -57,7 +61,7 @@ class CNN_RGB(nn.Module):
     def training_process(self):
         # .train() ensures our model is in training mode
         self.train()
-        max_epoch = 10
+        max_epoch = 30
         learning_rate = 5e-4
         #learning_rate = 0.001
         print("*******Starting Training*******\n")
@@ -134,12 +138,12 @@ class CNN_RGB(nn.Module):
         # Training data needs to use the transform function that adds variation to the data
         if t_type == 'test':
             for matrix in self.data[t_type]:
-                tensor_array.append(self.test_transform(matrix['image']))
-                label_array.append(torch.tensor(matrix['label']))
+                tensor_array.append(self.test_transform(matrix['image']).float())
+                label_array.append(torch.tensor(matrix['label'] - 1).long())
         else:
             for matrix in self.data[t_type]:
-                tensor_array.append(self.transform_function(matrix['image']))
-                label_array.append(torch.tensor(matrix['label']))
+                tensor_array.append(self.transform_function(matrix['image']).float())
+                label_array.append(torch.tensor(matrix['label'] - 1).long())
 
         return tensor_array,label_array
 
