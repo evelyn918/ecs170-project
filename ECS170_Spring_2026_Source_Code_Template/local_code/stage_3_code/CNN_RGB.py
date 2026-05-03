@@ -14,6 +14,7 @@ class CNN_RGB(nn.Module):
 
     def __init__(self):
         #self.transform_function = transforms.ToTensor()
+        # This function gives the images a bit more variation when creating the image matrix
         self.transform_function = transforms.Compose([
             transforms.ToTensor(),
             transforms.RandomHorizontalFlip(),
@@ -26,6 +27,7 @@ class CNN_RGB(nn.Module):
         ])
         super().__init__()
         self.conv1 = nn.Conv2d(3, 12, 5, padding=2)
+        # Batch normalization decreases variation to help with learning
         self.bn1 = nn.BatchNorm2d(12)
 
         self.conv2 = nn.Conv2d(12, 32, 5, padding=2)
@@ -53,24 +55,24 @@ class CNN_RGB(nn.Module):
 
 
     def training_process(self):
+        # .train() ensures our model is in training mode
         self.train()
-        max_epoch = 3
+        max_epoch = 5
         learning_rate = 5e-4
         print("*******Starting Training*******\n")
         loss_function = nn.CrossEntropyLoss()
         #optimizer = optim.SGD(self.parameters(), lr=0.001, momentum=0.9)
         optimizer = optim.Adam(self.parameters(), learning_rate)
 
-        t_data, l_data = self.create_tensor_array('train')
-        t_data = torch.stack(t_data)
-        l_data = torch.tensor(l_data)
+        batch_size = 15
 
-        adjusted_dataset = TensorDataset(t_data, l_data)
+        for epoch in range(max_epoch + 1):
+            t_data, l_data = self.create_tensor_array('train')
+            t_data = torch.stack(t_data)
+            l_data = torch.tensor(l_data)
+            adjusted_dataset = TensorDataset(t_data, l_data)
+            dataloader = DataLoader(adjusted_dataset, batch_size, shuffle=True)
 
-        batch_size = 25
-        dataloader = DataLoader(adjusted_dataset, batch_size, shuffle=True)
-
-        for epoch in range(max_epoch):
             print("epoch: {}\n***************\n".format(epoch))
             for i, batch in enumerate(dataloader):
                 matrix,label = batch
@@ -83,7 +85,7 @@ class CNN_RGB(nn.Module):
                 loss.backward()
 
                 optimizer.step()
-
+                # Print the current loss for each 1000 mini batches
                 if i % 1000 == 0 :
                     print("current loss: {}\n".format(loss.item()))
             #self.testing_process()
@@ -91,7 +93,9 @@ class CNN_RGB(nn.Module):
 
 
     def testing_process(self):
+        # .eval() takes out model out of learning mode so neurons should not be affected by testing data
         self.eval()
+
         print("*******Starting Testing*******\n")
         t_data, l_data = self.create_tensor_array('test')
         t_data = torch.stack(t_data)
@@ -105,7 +109,9 @@ class CNN_RGB(nn.Module):
                 total += 1
                 image,label = instance
 
+                # Forward expects a batch dimension so we need to add one here to each image matrix
                 image = image.unsqueeze(0)
+
                 _,prediction = torch.max(self.forward(image),1)
                 if i % 1000 == 0 and 0:
                     print("Image {} \n Predicted label: {} \n Actual Label: {}\n".format(i,prediction.item(),label))
@@ -120,10 +126,11 @@ class CNN_RGB(nn.Module):
         print("***************\n")
 
 
-    def create_tensor_array(self, t_type):
+    def create_tensor_array(self,t_type):
         tensor_array = []
         label_array = []
 
+        # Training data needs to use the transform function that adds variation to the data
         if t_type == 'test':
             for matrix in self.data[t_type]:
                 tensor_array.append(self.test_transform(matrix['image']))
