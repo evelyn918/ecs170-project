@@ -23,7 +23,7 @@ if 1:
     np.random.seed(2)
     torch.manual_seed(2)
     #------------------------------------------------------
-    m_number = input("Enter the model you would like to use | (1) for RGB (2) for grey scale: ")
+    m_number = input("Enter the model you would like to use | (1) for RGB (2) for greyscale: ")
     colored_data_path = "data/stage_3_data/CIFAR"
     grey_data_path = "data/stage_3_data/MNIST"
 
