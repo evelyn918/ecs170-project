@@ -1,0 +1,43 @@
+
+epoch: 0
+***************
+
+current loss: 2.303006172180176
+
+current loss: 0.1687706559896469
+
+epoch: 1
+***************
+
+current loss: 0.09417078644037247
+
+current loss: 0.014954880811274052
+
+epoch: 2
+***************
+
+current loss: 0.18381236493587494
+
+current loss: 0.014412016607820988
+
+epoch: 3
+***************
+
+current loss: 0.07672916352748871
+
+current loss: 0.008756746537983418
+
+Training finished
+*******Starting Testing*******
+
+***************
+
+Testing finished
+Score: 9807/10000
+
+accuracy: 0.9807
+
+***************
+
+
+Process finished with exit code 0

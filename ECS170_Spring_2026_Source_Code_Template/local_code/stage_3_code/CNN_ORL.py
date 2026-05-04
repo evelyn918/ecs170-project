@@ -18,14 +18,14 @@ class CNN_ORL(nn.Module):
 
         self.transform_function = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((28, 28)),
+            transforms.Resize((92, 92)),
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,))
         ])
 
         self.test_transform = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((28, 28)),
+            transforms.Resize((92, 92)),
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,))
         ])
@@ -42,7 +42,7 @@ class CNN_ORL(nn.Module):
 
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.fc1 = nn.Linear(64 * 3 * 3, 450)
+        self.fc1 = nn.Linear(64 * 11 * 11, 450)
         self.fc2 = nn.Linear(450,250)
         self.fc3 = nn.Linear(250,40)
 
@@ -61,7 +61,7 @@ class CNN_ORL(nn.Module):
     def training_process(self):
         # .train() ensures our model is in training mode
         self.train()
-        max_epoch = 30
+        max_epoch = 15
         learning_rate = 5e-4
         #learning_rate = 0.001
         print("*******Starting Training*******\n")
@@ -69,7 +69,7 @@ class CNN_ORL(nn.Module):
         #optimizer = optim.SGD(self.parameters(), lr=0.001, momentum=0.9)
         optimizer = optim.Adam(self.parameters(), learning_rate)
 
-        batch_size = 30
+        batch_size = 15
 
         for epoch in range(max_epoch + 1):
             t_data, l_data = self.create_tensor_array('train')

@@ -1,0 +1,161 @@
+epoch: 0
+***************
+
+current loss: 2.312427043914795
+
+current loss: 1.6780177354812622
+
+epoch: 1
+***************
+
+current loss: 1.1968004703521729
+
+current loss: 1.1641058921813965
+
+epoch: 2
+***************
+
+current loss: 0.8599634170532227
+
+current loss: 0.8586575984954834
+
+epoch: 3
+***************
+
+current loss: 0.9067397713661194
+
+current loss: 1.150532841682434
+
+epoch: 4
+***************
+
+current loss: 0.6762469410896301
+
+current loss: 0.7257381081581116
+
+epoch: 5
+***************
+
+current loss: 0.4439016282558441
+
+current loss: 0.4226089119911194
+
+epoch: 6
+***************
+
+current loss: 0.5801154375076294
+
+current loss: 0.829939603805542
+
+epoch: 7
+***************
+
+current loss: 0.6173708438873291
+
+current loss: 0.5773541331291199
+
+epoch: 8
+***************
+
+current loss: 0.5126199722290039
+
+current loss: 0.6151249408721924
+
+epoch: 9
+***************
+
+current loss: 0.3847931921482086
+
+current loss: 0.5255260467529297
+
+epoch: 10
+***************
+
+current loss: 0.6727187037467957
+
+current loss: 0.5893693566322327
+
+epoch: 11
+***************
+
+current loss: 0.3845959007740021
+
+current loss: 0.5963993072509766
+
+epoch: 12
+***************
+
+current loss: 0.3434242308139801
+
+current loss: 0.49271392822265625
+
+epoch: 13
+***************
+
+current loss: 0.5288102030754089
+
+current loss: 0.3646477162837982
+
+epoch: 14
+***************
+
+current loss: 0.9369258880615234
+
+current loss: 0.38036999106407166
+
+epoch: 15
+***************
+
+current loss: 0.5190637707710266
+
+current loss: 0.9995182752609253
+
+epoch: 16
+***************
+
+current loss: 0.42923229932785034
+
+current loss: 0.5453401803970337
+
+epoch: 17
+***************
+
+current loss: 0.21213512122631073
+
+current loss: 0.49243149161338806
+
+epoch: 18
+***************
+
+current loss: 0.4766562581062317
+
+current loss: 0.3323286175727844
+
+epoch: 19
+***************
+
+current loss: 0.28587591648101807
+
+current loss: 0.47184666991233826
+
+epoch: 20
+***************
+
+current loss: 0.4088304936885834
+
+current loss: 0.40071916580200195
+
+Training finished
+*******Starting Testing*******
+
+***************
+
+Testing finished
+Score: 8140/10000
+
+accuracy: 0.814
+
+***************
+
+
+Process finished with exit code 0

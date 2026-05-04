@@ -32,18 +32,17 @@ class Method_MLP(method, nn.Module):
         self.max_epoch = epoch
         # check here for nn.Linear doc: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
         # Feature that adds the number of layers
-        self.fc_layer_1 = nn.Linear(784, 30)
+        self.fc_layer_1 = nn.Linear(784, 584)
         # check here for nn.ReLU doc: https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
         self.activation_func_1 = nn.ReLU()
-        self.fc_layer_2 = nn.Linear(30, 20)
+        self.fc_layer_2 = nn.Linear(584, 384)
         # check here for nn.Softmax doc: https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html
         self.activation_func_2 = nn.ReLU()
 
-        self.fc_layer_3 = nn.Linear(20, 15)
+        self.fc_layer_3 = nn.Linear(384, 184)
         self.activation_func_3  = nn.ReLU()
 
-        self.fc_layer_4 = nn.Linear(15, 10)
-        self.activation_func_4 = nn.Softmax(dim=1)
+        self.fc_layer_4 = nn.Linear(184, 10)
 
 
     # it defines the forward propagation function for input x
@@ -60,7 +59,7 @@ class Method_MLP(method, nn.Module):
         # n (denotes the input instance number): 0th dimension; 2 (denotes the class number): 1st dimension
         # we do softmax along dim=1 to get the normalized classification probability distributions for each instance
 
-        y_pred = self.activation_func_4(self.fc_layer_4(h))
+        y_pred = self.fc_layer_4(h)
         return y_pred
 
     # backward error propagation will be implemented by pytorch automatically

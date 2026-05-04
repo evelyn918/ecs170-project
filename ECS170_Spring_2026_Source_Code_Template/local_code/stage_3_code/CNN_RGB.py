@@ -57,7 +57,7 @@ class CNN_RGB(nn.Module):
     def training_process(self):
         # .train() ensures our model is in training mode
         self.train()
-        max_epoch = 10
+        max_epoch = 20
         learning_rate = 5e-4
         #learning_rate = 0.001
         print("*******Starting Training*******\n")
