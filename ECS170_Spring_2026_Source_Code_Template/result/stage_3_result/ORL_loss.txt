@@ -1,0 +1,79 @@
+Epoch: 0
+***************
+
+Average Loss: 2.492313931385676
+Epoch: 1
+***************
+
+Average Loss: 0.18332633671040335
+Epoch: 2
+***************
+
+Average Loss: 0.034705377843541406
+Epoch: 3
+***************
+
+Average Loss: 0.007250903751507091
+Epoch: 4
+***************
+
+Average Loss: 0.004187425906517698
+Epoch: 5
+***************
+
+Average Loss: 0.0021000878211149634
+Epoch: 6
+***************
+
+Average Loss: 0.0009579607685736846
+Epoch: 7
+***************
+
+Average Loss: 0.0007444833851574609
+Epoch: 8
+***************
+
+Average Loss: 0.000577673237179018
+Epoch: 9
+***************
+
+Average Loss: 0.0004817300026237111
+Epoch: 10
+***************
+
+Average Loss: 0.0004004356366446397
+Epoch: 11
+***************
+
+Average Loss: 0.00039429225338002044
+Epoch: 12
+***************
+
+Average Loss: 0.0002995863627196134
+Epoch: 13
+***************
+
+Average Loss: 0.00029765404178760946
+Epoch: 14
+***************
+
+Average Loss: 0.0002645942640810972
+Epoch: 15
+***************
+
+Average Loss: 0.00023707737727818312
+Training finished
+******* Starting Testing *******
+
+***************
+
+Testing Finished
+Score: 40/40
+Accuracy: 1.0
+Precision: 1.0
+Recall: 1.0
+F1: 1.0
+***************
+
+
+Process finished with exit code 0

@@ -6,6 +6,8 @@ from torchvision import transforms
 import torch.optim as optim
 import torch.nn.functional as f
 from torch.utils.data import DataLoader, TensorDataset
+import matplotlib.pyplot as plt
+from sklearn.metrics import precision_score, recall_score, f1_score
 
 class CNN_Grey(nn.Module):
     data = None
@@ -60,21 +62,27 @@ class CNN_Grey(nn.Module):
         max_epoch = 3
         learning_rate = 5e-4
         #learning_rate = 0.001
-        print("*******Starting Training*******\n")
+        print("******* Starting Training *******\n")
         loss_function = nn.CrossEntropyLoss()
         #optimizer = optim.SGD(self.parameters(), lr=0.001, momentum=0.9)
         optimizer = optim.Adam(self.parameters(), learning_rate)
 
         batch_size = 30
 
+        # Loss History
+        loss_history = []
+
         for epoch in range(max_epoch + 1):
+            epoch_loss = 0
+            count = 0
+
             t_data, l_data = self.create_tensor_array('train')
             t_data = torch.stack(t_data)
             l_data = torch.tensor(l_data)
             adjusted_dataset = TensorDataset(t_data, l_data)
             dataloader = DataLoader(adjusted_dataset, batch_size, shuffle=True)
 
-            print("epoch: {}\n***************\n".format(epoch))
+            print("Epoch: {}\n***************\n".format(epoch))
             for i, batch in enumerate(dataloader):
                 matrix,label = batch
 
@@ -86,18 +94,31 @@ class CNN_Grey(nn.Module):
                 loss.backward()
 
                 optimizer.step()
-                # Print the current loss for each 1000 mini batches
-                if i % 1000 == 0 :
-                    print("current loss: {}\n".format(loss.item()))
-            #self.testing_process()
-        print("Training finished")
+                epoch_loss += loss.item()
+                count += 1
+
+            # Average Loss (For Loss History)
+            avg_loss = epoch_loss / count
+            loss_history.append(avg_loss)
+            print("Average Loss:", avg_loss)
+
+        self.plot_loss(loss_history)
+
+        print("Training Finished")
+
+    def plot_loss(self, loss_history):
+        plt.plot(loss_history)
+        plt.title("MNIST Training Convergence Curve")
+        plt.xlabel("Training Epoch")
+        plt.ylabel("Loss Values")
+        plt.show()
 
 
     def testing_process(self):
         # .eval() takes out model out of learning mode so neurons should not be affected by testing data
         self.eval()
 
-        print("*******Starting Testing*******\n")
+        print("******* Starting Testing *******\n")
         t_data, l_data = self.create_tensor_array('test')
         t_data = torch.stack(t_data)
         l_data = torch.tensor(l_data)
@@ -105,6 +126,10 @@ class CNN_Grey(nn.Module):
 
         correct = 0
         total = 0
+
+        all_predictions = []
+        all_labels = []
+
         with torch.no_grad():
             for i, instance in enumerate(adjusted_dataset):
                 total += 1
@@ -114,18 +139,29 @@ class CNN_Grey(nn.Module):
                 image = image.unsqueeze(0)
 
                 _,prediction = torch.max(self.forward(image),1)
-                if i % 1000 == 0 and 0:
-                    print("Image {} \n Predicted label: {} \n Actual Label: {}\n".format(i,prediction.item(),label))
 
-                if prediction.item() == label:
+                all_predictions.append(prediction.item())
+                all_labels.append(label.item())
+
+                if prediction.item() == label.item():
                     correct += 1
 
+        accuracy = correct / total
+
+        precision = precision_score(all_labels, all_predictions, average='macro')
+        recall = recall_score(all_labels, all_predictions, average='macro')
+        f1 = f1_score(all_labels, all_predictions, average='macro')
+
         print("***************\n")
-        print("Testing finished")
+        print("Testing Finished")
         print("Score: {}/{}\n".format(correct,total))
-        print("accuracy: {}\n".format(correct/total))
+        print("Accuracy: {}".format(correct/total))
+        print("Precision: {}".format(precision))
+        print("Recall: {}".format(recall))
+        print("F1: {}".format(f1))
         print("***************\n")
 
+        return accuracy
 
     def create_tensor_array(self,t_type):
         tensor_array = []
